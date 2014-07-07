@@ -69,13 +69,15 @@ def table_tapped(sender):
     view.name = filename
     try:
         with open(path + '/' + filename,'rb') as in_file:
+			buffer = ''
             for line in range(0, os.path.getsize(path + '/' + filename), 16):
                 h = s = ''
                 for c in in_file.read(16):
                     i = ord(c)
                     h += '{:02X} '.format(i, 'x')
                     s += c if 31 < i < 127 else '.'
-                textview1.text += '0x{:08X} | {:47} | {:8}\n'.format(line, h, s)
+                buffer += '0x{:08X} | {:47} | {:8}\n'.format(line, h, s)
+			textview1.text = buffer
     except:
         textview1.text = 'Error!\nFile = {}/{}'.format(path, filename)
 
