@@ -14,14 +14,16 @@ def get_dir(path):
     files.sort()
     all = []
     for dir in dirs:
-        namelength = len(dir)
-        all.append('{:89} | <{}>'.format('/' + dir, namelength))
+        #namelength = len(dir)
+        #all.append('{:89} | <{}>'.format('/' + dir, namelength))
+        all.append('/' + dir)
     for file in files:
-        namelength = len(file)
+        #namelength = len(file)
         full_pathname = path + '/' + file
         size = '{} Bytes'.format(os.path.getsize(full_pathname))
         date = datetime.datetime.fromtimestamp(os.path.getmtime(full_pathname))
-        all.append('{0:43} | {1:20} | {2:} | <{3:}>'.format(file, size, date, namelength))
+        #all.append('{0:43} | {1:20} | {2:} | <{3:}>'.format(file, size, date, namelength))
+        all.append('{:43} | {:20} | {}'.format(file, size, date))
     return all
 
 def table_tapped(sender):
