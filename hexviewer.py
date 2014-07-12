@@ -5,18 +5,18 @@ import datetime, os, ui
 def get_dir(path):
     dirs  = [] if path == root else ['..']
     files = []
-    for entry in os.listdir(path):
+    for entry in sorted(os.listdir(path)):
         if os.path.isdir(path + '/' + entry):
             dirs.append(entry)
         else:
             files.append(entry)
-    dirs.sort()
-    files.sort()
-    all = []
-    for dir in dirs:
+    #dirs.sort()
+    #files.sort()
+    #all = []
+    #for dir in dirs:
         #namelength = len(dir)
         #all.append('{:89} | <{}>'.format('/' + dir, namelength))
-        all.append('/' + dir)
+    all = ['/' + dir for dir in dirs]
     for file in files:
         #namelength = len(file)
         full_pathname = path + '/' + file
