@@ -30,25 +30,28 @@ def table_tapped(sender):
     global tableview1
     global view
     rowtext = sender.items[sender.selected_row]
-    start, stop = rowtext.find('<'), rowtext.find('>')
-    namelength = int(rowtext[start+1:stop])
+    filename_tapped = rowtext.partition('|')[0].strip()
+    #start, stop = rowtext.find('<'), rowtext.find('>')
+    #namelength = int(rowtext[start+1:stop])
     if rowtext[0] == '/':
-        if rowtext[:namelength+1] == '/..':
+        #if rowtext[:namelength+1] == '/..':
+        if filename_tapped == '/..':
             pos = path.rfind('/')
             path = path[:pos]
         else:
-            path = path + rowtext[:namelength+1]
+            path = path + filename_tapped  # rowtext[:namelength+1]
         all = get_dir(path)
         view.name = path
         tableview1.close()
-        tableview1 = ui.TableView()
-        tableview1.frame = view.frame
-        tableview1.x = tableview1.y = 0
-        tableview1.flex = 'WH'
-        tableview1.row_height = 30
-        tableview1.background_color = '#DBDBDB'
-        tableview1.allows_selection = True
-        view.add_subview(tableview1)
+        tableview1 = make_tableview1(view)
+        #tableview1 = ui.TableView()
+        #tableview1.frame = view.frame
+        #tableview1.x = tableview1.y = 0
+        #tableview1.flex = 'WH'
+        #tableview1.row_height = 30
+        #tableview1.background_color = '#DBDBDB'
+        #tableview1.allows_selection = True
+        #view.add_subview(tableview1)
         lst = ui.ListDataSource(all)
         tableview1.data_source = lst
         tableview1.delegate = lst
@@ -56,7 +59,7 @@ def table_tapped(sender):
         lst.action = table_tapped
         lst.delete_enabled = False
         return
-    filename = rowtext[:namelength]
+    filename = filename_tapped  # rowtext[:namelength]
     tableview1.hidden = True
     textview1 = ui.TextView()
     textview1.frame = view.frame
