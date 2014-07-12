@@ -79,9 +79,9 @@ def table_tapped(sender):
                 h = s = ''
                 for c in in_file.read(16):
                     i = ord(c)
-                    h += '{:02X} '.format(i, 'x')
+                    h += '{:02X} '.format(i)
                     s += c if 31 < i < 127 else '.'
-                buffer += '0x{:08X} | {:47} | {:8}\n'.format(line, h, s)
+                buffer += '0x{:08X} | {:48}| {:8}\n'.format(line, h, s)
             textview1.text = buffer
     except:
         textview1.text = 'Error!\nFile = {}/{}'.format(path, filename)
