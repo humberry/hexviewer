@@ -72,10 +72,11 @@ def table_tapped(sender):
     textview1.alignment = ui.ALIGN_LEFT
     view.add_subview(textview1)
     view.name = filename
+    full_pathname = path + '/' + filename
     try:
-        with open(path + '/' + filename,'rb') as in_file:
+        with open(full_pathname,'rb') as in_file:
             buffer = ''
-            for line in range(0, os.path.getsize(path + '/' + filename), 16):
+            for line in range(0, os.path.getsize(full_pathname), 16):
                 h = s = ''
                 for c in in_file.read(16):
                     i = ord(c)
@@ -84,7 +85,7 @@ def table_tapped(sender):
                 buffer += '0x{:08X} | {:48}| {:8}\n'.format(line, h, s)
             textview1.text = buffer
     except:
-        textview1.text = 'Error!\nFile = {}/{}'.format(path, filename)
+        textview1.text = 'Error!\nFile = ' + full_pathname
 
 def make_tableview1(view):
     tableview1 = ui.TableView()
