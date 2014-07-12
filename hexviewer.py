@@ -27,10 +27,10 @@ def get_dir(path):
     return all
 
 def table_tapped(sender):
-    global path
-    global lst
-    global tableview1
-    global view
+    global path, tableview1
+    #global lst
+    #global tableview1
+    #global view
     rowtext = sender.items[sender.selected_row]
     filename_tapped = rowtext.partition('|')[0].strip()
     #start, stop = rowtext.find('<'), rowtext.find('>')
