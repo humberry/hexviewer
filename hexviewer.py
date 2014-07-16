@@ -22,7 +22,7 @@ def table_tapped(sender):
     global path, tableview1
     rowtext = sender.items[sender.selected_row]
     filename_tapped = rowtext.partition('|')[0].strip()
-     if rowtext[0] == '/':
+    if rowtext[0] == '/':
         if filename_tapped == '/..':
             pos = path.rfind('/')
             path = path[:pos]
