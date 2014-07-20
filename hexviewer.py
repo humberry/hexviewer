@@ -2,6 +2,34 @@
 
 import datetime, os, ui
 
+def button_action(sender):
+	global pos, searchstr, view
+	tvd = view['tv_data']
+	tfss = view['tf_search_str']
+	if tfss.text != '':
+		if tfss.text == searchstr:
+			#next hit
+			pos = tvd.text.find(searchstr,pos+1)
+		else:
+			#new search
+			searchstr = tfss.text
+			pos = tvd.text.find(searchstr)
+		if pos >= 0:	#hit
+			temp = pos - 80	#search one line for 0x
+			if temp >= 0:	#not first line
+				temp = tvd.text.find('0x',temp,pos)
+				if temp >= 0:	#found 0x
+					sender.title = tvd.text[temp:temp+10]
+				else:
+					sender.title = 'kein 0x'
+			else:
+				sender.title = '0x00000000'	#first line
+			tvd.selected_range = (pos, pos+len(searchstr))	# works only when textview is active!!!
+		else:
+			sender.title = 'Restart'
+	else: 
+		sender.title = 'Search'
+		
 def get_dir(path):
     dirs  = [] if path == root else ['..']
     files = []
@@ -19,7 +47,7 @@ def get_dir(path):
     return all
 
 def table_tapped(sender):
-    global path, tableview1
+    global path, tableview1, view, buffer
     rowtext = sender.items[sender.selected_row]
     filename_tapped = rowtext.partition('|')[0].strip()
     if rowtext[0] == '/':
@@ -41,19 +69,41 @@ def table_tapped(sender):
         return
     filename = filename_tapped
     tableview1.hidden = True
+    tableview1.close()
     textview1 = ui.TextView()
+    textview1.name = 'tv_data'
     textview1.frame = view.frame
-    textview1.x = textview1.y = 0
-    textview1.autoresizing = 'WH'
+    textview1.x = 6
+    textview1.y = 46
+    textview1.width = view.width - 12
+    textview1.height = view.height - 52
+    textview1.autoresizing = 'WHT'
     textview1.editable = False
     textview1.font = ('Courier', 15)
-    textview1.alignment = ui.ALIGN_LEFT
     view.add_subview(textview1)
+    textfield1 = ui.TextField()
+    textfield1.name = 'tf_search_str'
+    textfield1.x = textfield1.y = 6
+    textfield1.width = view.width - 161
+    textfield1.height = 32
+    textfield1.flex = 'WR'
+    view.add_subview(textfield1)
+    button1 = ui.Button()
+    button1.name = 'btn_search'
+    button1.title = 'Search'
+    button1.x = view.width - 149
+    button1.y = 6
+    button1.width = 144
+    button1.height = 32
+    button1.flex = 'WL'
+    button1.border_width = 2
+    button1.corner_radius = 5
+    button1.action = button_action
+    view.add_subview(button1)
     view.name = filename
     full_pathname = path + '/' + filename
     try:
         with open(full_pathname,'rb') as in_file:
-            buffer = ''
             for line in range(0, os.path.getsize(full_pathname), 16):
                 h = s = ''
                 for c in in_file.read(16):
@@ -86,6 +136,11 @@ def make_lst(tableview, all):
     lst.delete_enabled = False
     return lst
 
+pos = -1
+searchstr = ''
+buffer = ''
+tvd = None 
+tfss = None 
 root = os.path.expanduser('~')
 path = os.getcwd()
 all = get_dir(path)
@@ -94,8 +149,10 @@ cpath = path[pos:]
 
 view = ui.View()
 view.name = path
+view.x = view.y = 0
+view.width = 768
+view.height = 960
 view.background_color = 'white'
-view.flex = 'WH'
 tableview1 = make_tableview1(view)
 lst = make_lst(tableview1, all)
 view.present('fullscreen')
