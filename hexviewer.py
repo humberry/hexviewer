@@ -15,15 +15,12 @@ def button_action(sender):
 			searchstr = tfss.text
 			pos = tvd.text.find(searchstr)
 		if pos >= 0:	#hit
-			temp = pos - 80	#search one line for 0x
-			if temp >= 0:	#not first line
-				temp = tvd.text.find('0x',temp,pos)
-				if temp >= 0:	#found 0x
-					sender.title = tvd.text[temp:temp+10]
-				else:
-					sender.title = 'kein 0x'
+			x = tvd.text.find('\n',pos) - 79		#line start
+			y = len(tvd.text) - len(tvd.text) % 80	#last line start
+			if pos < y:
+				sender.title = tvd.text[x:x+10]
 			else:
-				sender.title = '0x00000000'	#first line
+				sender.title = tvd.text[y:y+10]
 			tvd.selected_range = (pos, pos+len(searchstr))	# works only when textview is active!!!
 		else:
 			sender.title = 'Restart'
@@ -78,7 +75,7 @@ def table_tapped(sender):
     textview1.width = view.width - 12
     textview1.height = view.height - 52
     textview1.autoresizing = 'WHT'
-    textview1.editable = False
+    #textview1.editable = False	#easy access no double tap needed
     textview1.font = ('Courier', 15)
     view.add_subview(textview1)
     textfield1 = ui.TextField()
