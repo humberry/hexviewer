@@ -3,30 +3,30 @@
 import datetime, os, ui
 
 def button_action(sender):
-	global pos, searchstr, view
-	tvd = view['tv_data']
-	tfss = view['tf_search_str']
-	if tfss.text != '':
-		if tfss.text == searchstr:
-			#next hit
-			pos = tvd.text.find(searchstr,pos+1)
-		else:
-			#new search
-			searchstr = tfss.text
-			pos = tvd.text.find(searchstr)
-		if pos >= 0:	#hit
-			x = tvd.text.find('\n',pos) - 79		#line start
-			y = len(tvd.text) - len(tvd.text) % 80	#last line start
-			if pos < y:
-				sender.title = tvd.text[x:x+10]
-			else:
-				sender.title = tvd.text[y:y+10]
-			tvd.selected_range = (pos, pos+len(searchstr))	# works only when textview is active!!!
-		else:
-			sender.title = 'Restart'
-	else: 
-		sender.title = 'Search'
-		
+    global pos, searchstr, view
+    tvd = view['tv_data']
+    tfss = view['tf_search_str']
+    if tfss.text != '':
+        if tfss.text == searchstr:
+            #next hit
+            pos = tvd.text.find(searchstr,pos+1)
+        else:
+            #new search
+            searchstr = tfss.text
+            pos = tvd.text.find(searchstr)
+        if pos >= 0:    #hit
+            x = tvd.text.find('\n',pos) - 79        #line start
+            y = len(tvd.text) - len(tvd.text) % 80  #last line start
+            if pos < y:
+                sender.title = tvd.text[x:x+10]
+            else:
+                sender.title = tvd.text[y:y+10]
+            tvd.selected_range = (pos, pos+len(searchstr))  # works only when textview is active!!!
+        else:
+            sender.title = 'Restart'
+    else: 
+        sender.title = 'Search'
+
 def get_dir(path):
     dirs  = [] if path == root else ['..']
     files = []
@@ -75,7 +75,7 @@ def table_tapped(sender):
     textview1.width = view.width - 12
     textview1.height = view.height - 52
     textview1.autoresizing = 'WHT'
-    #textview1.editable = False	#easy access no double tap needed
+    #textview1.editable = False     #easy access no double tap needed
     textview1.font = ('Courier', 15)
     view.add_subview(textview1)
     textfield1 = ui.TextField()
