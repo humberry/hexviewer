@@ -117,7 +117,8 @@ class HexViewerView(ui.View):
         return button
 
     def button_action(self, sender):
-        pos = searchstr = 0
+        pos = -1
+        searchstr = ''
         tvd = self['tv_data']
         tfss = self['tf_search_str']
         if tfss.text != '':
